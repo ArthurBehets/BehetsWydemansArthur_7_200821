@@ -1,5 +1,5 @@
 {
-  "name": "groupomania",
+  "name": "my-first-vue-cli-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,12 +20,6 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
     "node-sass": "^4.12.0",
-    "sass-loader": "^8.0.2",
-    "webpack": "^5.51.1",
-    "webpack-cli": "^4.8.0"
-  },
-  "description": "## Project setup ``` npm install ```",
-  "main": ".eslintrc.js",
-  "author": "",
-  "license": "ISC"
+    "sass-loader": "^8.0.2"
+  }
 }

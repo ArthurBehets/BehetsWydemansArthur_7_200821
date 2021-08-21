@@ -18,18 +18,6 @@ const userRoutes = require('./routes/user');
 //const commentRoutes = require('./routes/comment');
 
 
-
-  
-  con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-    con.query("SELECT * FROM user", function (err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-      });
-    
-  });
-
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -43,5 +31,4 @@ app.use('/api/auth', userRoutes);
 //app.use('/api/post', postRoutes);
 //app.use('/api/comment', commentRoutes);
 
-module.exports = con;
 module.exports = app;
