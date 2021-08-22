@@ -11,6 +11,22 @@
   <body>
     <a href="javascript:signup()">User signup</a>
     <a href="javascript:login()">User login</a>
-    <!-- built files will be auto injected -->
+    <section>
+      <div id="app" class="app">
+        <section v-show="show">
+          
+          <a href="javascript:signup()">Submit</a>
+        </section>
+      </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const app = new Vue({
+        el: '#app',
+        data:{
+          show : false
+        }
+      })
+    </script>
   </body>
 </html>

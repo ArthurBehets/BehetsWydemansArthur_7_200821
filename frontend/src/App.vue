@@ -1,8 +1,18 @@
 <template>
-  <h1>OK</h1>
+  <form>
+            <label for="email">Email : </label>
+            <input type="email" name="email" id="emailInput" required>
+            <label for="name">Name :</label>
+            <input type="text" maxlength="20" name="name" id ="nameInput" required>
+            <label for="firstName">First Name :</label>
+            <input type="text" maxlength="20" name="name" id ="firstNameInput" required>
+            <label for="password">Password :</label>
+            <input type="password" minlength="9" maxlength="20" name="password" id="passwordInput" required>
+          </form>
 </template>
 
 <script>
+  
 </script>
 
 <style lang="scss">
