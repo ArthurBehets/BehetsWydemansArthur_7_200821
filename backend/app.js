@@ -1,21 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var mysql = require('mysql');
-
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "myPassword24",
-    database: "groupomania",
-  });
-
-
+const path = require('path');
 
 const app = express();
 
 const userRoutes = require('./routes/user');
-//const postRoutes = require('./routes/post');
-//const commentRoutes = require('./routes/comment');
+const articleRoutes = require('./routes/article');
+const commentRoutes = require('./routes/comment');
 
 
 app.use((req, res, next) => {
@@ -27,8 +18,9 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes);
-//app.use('/api/post', postRoutes);
-//app.use('/api/comment', commentRoutes);
+app.use('/api/article', articleRoutes);
+app.use('/api/comment', commentRoutes);
 
 module.exports = app;

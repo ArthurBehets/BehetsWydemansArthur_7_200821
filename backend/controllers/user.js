@@ -13,6 +13,7 @@ const testMail = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
 
 exports.signup = (req, res, next) => {
   var userData = req.body.user;
+  //TODO vérifier les données de userData
   if(testMail.test(userData.email)){
     if(8 < userData.password< 21){
       con.query(
