@@ -1,13 +1,7 @@
-var mysql = require('mysql');
+var con = require('../connect');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
 
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "myPassword24",
-    database: "groupomania",
-  });
 
 const testMail = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
 

@@ -1,7 +1,7 @@
 <template>
 <form class="signupForm">
    <div class="signupForm__email">
-       <input type="email" name="email" id="email" onblur="validateEmail()" placeholder="Email" required>
+       <input type="email" name="email" id="email" onblur="validateEmail()" placeholder="Email"  required>
    </div>
    <div class="signupForm__name">
        <div class="signupForm__name-surname">
@@ -19,14 +19,22 @@
            <input name="confirmation" type="password" onblur="validatePassword()" placeholder="Confirmation" required>
        </div>
    </div>
-   <button onclick="signup()" class="signupForm__button">S'inscrire</button>
+   <button v-on:click="signup" class="signupForm__button">S'inscrire</button>
 </form>
 </template>
 
 <script>
    export default ({
-       name : "signupForm"
+       name : "signupForm",
+       methods: {
+
+    signup: function(){
+       console.log("ok");
+   }
+   }
    })
+
+
 </script>
 
 <style lang="scss">

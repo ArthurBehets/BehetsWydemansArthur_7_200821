@@ -1,9 +1,5 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Signup</router-link> |
-    <router-link to="/login">Login</router-link>
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
 <style lang="scss">

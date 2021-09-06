@@ -1,11 +1,4 @@
-var mysql = require('mysql');
-
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "myPassword24",
-    database: "groupomania",
-  });
+var con = require('../connect');
 
 
 exports.getAllComment = (req, res, next) => {

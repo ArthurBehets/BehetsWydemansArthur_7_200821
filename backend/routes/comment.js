@@ -5,8 +5,8 @@ const auth = require('../middleware/auth');
 
 const commentCtrl = require('../controllers/comment');
 
-router.get('/getAllComment', commentCtrl.getAllComment);
-router.get('/getOneComment', commentCtrl.getOneComment);
+router.get('/getAllComment', auth, commentCtrl.getAllComment);
+router.get('/getOneComment', auth, commentCtrl.getOneComment);
 router.post('/createComment', auth, multer, commentCtrl.createComment);
 router.post('/modifyComment', auth, multer, commentCtrl.modifyComment);
 router.post('/deleteComment', auth, multer, commentCtrl.deleteComment);

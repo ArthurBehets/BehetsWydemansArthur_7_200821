@@ -23,4 +23,5 @@ app.use('/api/auth', userRoutes);
 app.use('/api/article', articleRoutes);
 app.use('/api/comment', commentRoutes);
 
-module.exports = app;
+
+module.exports =  app;

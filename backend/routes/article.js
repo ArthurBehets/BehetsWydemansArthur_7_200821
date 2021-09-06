@@ -6,8 +6,8 @@ const auth = require('../middleware/auth');
 const articleCtrl = require('../controllers/article');
 
 router.get('/getAllArticle', articleCtrl.getAllArticle);
-router.get('/getOneArticle', articleCtrl.getOneArticle);
-router.get('/getCategory', articleCtrl.getCategory);
+router.get('/getOneArticle', auth, articleCtrl.getOneArticle);
+router.get('/getCategory', auth, articleCtrl.getCategory);
 router.post('/createArticle', auth, multer, articleCtrl.createArticle);
 router.post('/modifyArticle', auth, multer, articleCtrl.modifyArticle);
 router.post('/deleteArticle', auth, multer, articleCtrl.deleteArticle);
