@@ -3,13 +3,13 @@ var con = require('../connect');
 
 exports.getAllArticle = (req, res, next) => {
     con.query(
-        "SELECT * FROM article",
-        function(err, result){
+        "SELECT * FROM article natural JOIN user",
+        function(err, results){
             if (err){
                 return res.status(500).json({message : "Nothing found"})
             }
-            if (result){
-                return res.status(200).json({result, message : "You got them all"})
+            if (results){
+                return res.status(200).json({results})
             }
         }
     )
