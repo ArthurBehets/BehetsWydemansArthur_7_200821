@@ -12,7 +12,7 @@ exports.signup = (req, res, next) => {
     if(8 < userData.password< 21){
       con.query(
         "INSERT INTO user (email, password, name, firstName) VALUES (?,?,?,?)", 
-        [userData.email, userData.password, userData.name, userData.firstName],
+        [userData.email, userData.password, userData.surname, userData.firstname],
         function(err, results) {
             if(err){
               return res.status(500).json({console : "Cet email est déjà enregistré"});
@@ -29,7 +29,7 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   var userData = req.body.user;
   con.query(
-    "SELECT * FROM user WHERE email = ?",
+    "SELECT password FROM user WHERE email = ?",
     [userData.email],
     function(err, results){
       if(results[0].password == userData.password){
@@ -43,8 +43,10 @@ exports.login = (req, res, next) => {
             )
         })
       }
-      else{
-        return res.status(500).json({message : "Le mot de passe est incorrect."})
+      if(err){
+        return res.status(500).json({
+          console : "Mot de passe incorrect"
+        })
       }
     })
 }

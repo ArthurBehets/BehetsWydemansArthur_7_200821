@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import loginForm from '../components/loginForm.vue'
-import navigationLogSign from '../components/navigationLogSign.vue'
+import loginForm from '../components/connection/loginForm.vue'
+import navigationLogSign from '../components/connection/navigationLogSign.vue'
 
 export default({
     name : 'login',

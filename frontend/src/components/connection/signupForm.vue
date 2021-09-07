@@ -1,22 +1,22 @@
 <template>
 <form class="signupForm">
    <div class="signupForm__email">
-       <input type="email" name="email" id="email" onblur="validateEmail()" placeholder="Email"  required>
+       <input type="email" name="email" id="email" v-on:blur="validateEmail()" placeholder="Email"  required>
    </div>
    <div class="signupForm__name">
        <div class="signupForm__name-surname">
-           <input type="text" name="surname" onblur="validateName()" placeholder="Nom" required>
+           <input type="text" name="surname" id="surname" v-on:blur="validateName()" placeholder="Nom" required>
        </div>
        <div class="signupForm__name-firstname">
-           <input type="text" name="firstname" onblur="validateName()" placeholder="Prénom" required>   
+           <input type="text" name="firstname" id="firstname" v-on:blur="validateName()" placeholder="Prénom" required>   
        </div>
    </div>
    <div class="signupForm__password">
        <div class="signupForm__password-first">
-           <input name="password" type="password" onblur="validatePassword()" placeholder="Mot de passe" required>
+           <input name="password" type="password" id="password" v-on:blur="validatePassword()" placeholder="Mot de passe" required>
        </div>
        <div class="signupForm__password-confirmation">
-           <input name="confirmation" type="password" onblur="validatePassword()" placeholder="Confirmation" required>
+           <input name="confirmation" type="password" v-on:blur="validatePassword()" placeholder="Confirmation" required>
        </div>
    </div>
    <button v-on:click="signup" class="signupForm__button">S'inscrire</button>
@@ -24,15 +24,40 @@
 </template>
 
 <script>
+import router from '../../router/index'
+
    export default ({
        name : "signupForm",
        methods: {
-
-    signup: function(){
-       console.log("ok");
-   }
-   }
-   })
+            signup: function(){
+                let user = {
+                    email : document.getElementById("email").value,
+                    surname : document.getElementById("surname").value,
+                    firstname : document.getElementById("firstname").value,
+                    password : document.getElementById("password").value
+                }
+                if(user.email && user.surname && user.firstname && user.password){
+                    fetch("http://localhost:3000/api/auth/signup", {
+                    method: "POST",
+                    headers: { 
+                    'Accept': 'application/json', 
+                    'Content-Type': 'application/json' 
+                    },
+                    body: JSON.stringify({user})
+                })
+                .then(function(){
+                    router.push('/login');
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                }
+                else{
+                    //TODO alerte "renseigner tous les champs"
+                }
+                }
+        }   
+    })
 
 
 </script>
