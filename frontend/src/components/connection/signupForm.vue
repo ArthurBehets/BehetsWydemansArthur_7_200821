@@ -5,7 +5,7 @@
    </div>
    <div class="signupForm__name">
        <div class="signupForm__name-surname">
-           <input type="text" name="surname" id="surname" v-on:blur="validateName()" placeholder="Nom" required>
+           <input type="text" name="surname" id="lastname" v-on:blur="validateName()" placeholder="Nom" required>
        </div>
        <div class="signupForm__name-firstname">
            <input type="text" name="firstname" id="firstname" v-on:blur="validateName()" placeholder="Prénom" required>   
@@ -16,7 +16,7 @@
            <input name="password" type="password" id="password" v-on:blur="validatePassword()" placeholder="Mot de passe" required>
        </div>
        <div class="signupForm__password-confirmation">
-           <input name="confirmation" type="password" v-on:blur="validatePassword()" placeholder="Confirmation" required>
+           <input name="confirmation" type="password" v-on:blur="validateConfirmation()" placeholder="Confirmation" required>
        </div>
    </div>
    <button v-on:click="signup" class="signupForm__button">S'inscrire</button>
@@ -32,11 +32,11 @@ import router from '../../router/index'
             signup: function(){
                 let user = {
                     email : document.getElementById("email").value,
-                    surname : document.getElementById("surname").value,
+                    lastname : document.getElementById("lastname").value,
                     firstname : document.getElementById("firstname").value,
                     password : document.getElementById("password").value
                 }
-                if(user.email && user.surname && user.firstname && user.password){
+                if(user.email && user.lastname && user.firstname && user.password){
                     fetch("http://localhost:3000/api/auth/signup", {
                     method: "POST",
                     headers: { 
@@ -55,7 +55,55 @@ import router from '../../router/index'
                 else{
                     //TODO alerte "renseigner tous les champs"
                 }
+            },
+            validateEmail : function(){
+                 var emailModel = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                 var email = document.getElementById('email').value;
+                 if(emailModel.test(email)){
+                     //
+                 }
+                 else{
+                     document.getElementById("email").value = "";
+                     // TODO introduire alerte
+                 }
+            },
+            validateFirstname : function(){
+                let name = document.getElementById('firstname').value;
+                if (2 < name.length < 20){
+                    //
                 }
+                else{
+                   document.getElementById('firstname').value = ""; 
+                }
+            },
+            validateLasttname : function(){
+                let name = document.getElementById('lastname').value;
+                if (2 <= name.length <= 20){
+                    //
+                }
+                else{
+                   document.getElementById('lastname').value = ""; 
+                }
+            },
+            validatePassword : function(){
+                let password = document.getElementById('password').value;
+                if (9 <= password.length <= 20){
+                    //
+                }
+                else{
+                   document.getElementById('password').value = "";
+                }
+            }, 
+            validateConfirmation : function(){
+                let confirmation = document.getElementById('confirmation').value;
+                let password = document.getElementById('password').value;
+                if(confirmation === password){
+                    //
+                }
+                else{
+                    // TODO alert
+                }
+            }   
         }   
     })
 

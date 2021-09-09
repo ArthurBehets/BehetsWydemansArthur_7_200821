@@ -11,8 +11,8 @@ exports.signup = (req, res, next) => {
   if(testMail.test(userData.email)){
     if(8 < userData.password< 21){
       con.query(
-        "INSERT INTO user (email, password, name, firstName) VALUES (?,?,?,?)", 
-        [userData.email, userData.password, userData.surname, userData.firstname],
+        "INSERT INTO user (email, password, lastname, firstname) VALUES (?,?,?,?)", 
+        [userData.email, userData.password, userData.lastname, userData.firstname],
         function(err, results) {
             if(err){
               return res.status(500).json({console : "Cet email est déjà enregistré"});
