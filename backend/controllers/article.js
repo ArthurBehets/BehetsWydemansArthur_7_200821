@@ -1,9 +1,9 @@
 var con = require('../connect');
-
+var moment = require('moment');
 
 exports.getAllArticle = (req, res, next) => {
     con.query(
-        "SELECT * FROM article natural JOIN user",
+        "SELECT * FROM article natural JOIN user  ORDER BY publicationDate DESC",
         function(err, results){
             if (err){
                 return res.status(500).json({message : "Nothing found"})
@@ -18,7 +18,7 @@ exports.getAllArticle = (req, res, next) => {
 exports.getOneArticle = (req, res, next) => {
     con.query(
         "SELECT * FROM article WHERE articleId = ?",
-        [req.body.articleId],
+        [req.params.id],
         function(err, result){
             if (err){
                 return res.status(500).json({message : "Nothing found"})
@@ -46,17 +46,19 @@ exports.getCategory = (req, res, next) => {
 }
 
 exports.createArticle = (req, res, next) => {
-    var articleData = req.body.article;
+    var articleData = req.body;
+    let publicationDate = moment().format('YYYY-MM-DD HH:mm:ss');
+    console.log(articleData);
     // TODO vérifier les datas
     con.query(
-        "INSERT INTO article (articleId, userid, url, legend) VALUES (?,?,?)",
-        [articleData.artcicleId, articleData.userId, `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, articleData.legend],
+        "INSERT INTO article (userId, categoryId, url, legend, publicationDate) VALUES (?,?,?,?,?)",
+        [articleData.userId, articleData.categoryId, articleData.url, articleData.legend, publicationDate],
         function(err, result){
             if (err){
-                return res.status(500).json({message : "Nothing found"})
+                return res.status(500).json({message : "Nothing added"})
             }
             if (result){
-                return res.status(200).json({message : "You got all the category"})
+                return res.status(200).json({message : "Nicely added"})
             }
         }
     )

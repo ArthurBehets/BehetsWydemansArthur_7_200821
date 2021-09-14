@@ -5,10 +5,10 @@
    </div>
    <div class="signupForm__name">
        <div class="signupForm__name-surname">
-           <input type="text" name="surname" id="lastname" v-on:blur="validateName()" placeholder="Nom" required>
+           <input type="text" name="surname" id="lastname" v-on:blur="validateLastname()" placeholder="Nom" required>
        </div>
        <div class="signupForm__name-firstname">
-           <input type="text" name="firstname" id="firstname" v-on:blur="validateName()" placeholder="Prénom" required>   
+           <input type="text" name="firstname" id="firstname" v-on:blur="validateFirstname()" placeholder="Prénom" required>   
        </div>
    </div>
    <div class="signupForm__password">
@@ -16,7 +16,7 @@
            <input name="password" type="password" id="password" v-on:blur="validatePassword()" placeholder="Mot de passe" required>
        </div>
        <div class="signupForm__password-confirmation">
-           <input name="confirmation" type="password" v-on:blur="validateConfirmation()" placeholder="Confirmation" required>
+           <input name="confirmation" id="confirmation" type="password" v-on:blur="validateConfirmation()" placeholder="Confirmation" required>
        </div>
    </div>
    <button v-on:click="signup" class="signupForm__button">S'inscrire</button>
@@ -34,7 +34,8 @@ import router from '../../router/index'
                     email : document.getElementById("email").value,
                     lastname : document.getElementById("lastname").value,
                     firstname : document.getElementById("firstname").value,
-                    password : document.getElementById("password").value
+                    password : document.getElementById("password").value,
+                    grade : "user"
                 }
                 if(user.email && user.lastname && user.firstname && user.password){
                     fetch("http://localhost:3000/api/auth/signup", {
@@ -76,7 +77,7 @@ import router from '../../router/index'
                    document.getElementById('firstname').value = ""; 
                 }
             },
-            validateLasttname : function(){
+            validateLastname : function(){
                 let name = document.getElementById('lastname').value;
                 if (2 <= name.length <= 20){
                     //

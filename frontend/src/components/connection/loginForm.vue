@@ -29,10 +29,16 @@ import router from '../../router/index'
                     },
                     body: JSON.stringify({user})
                 })
-                .then(function(user){
-                    console.log(user);
+                .then(function(res){
+                    if (res.ok){
+                        return res.json();
+                    }
+                })
+                .then(function(value){
+                    localStorage.setItem("user", value.userId);
+                    localStorage.setItem("grade", value.grade);
+                    localStorage.setItem("utoken", value.token);
                     router.push('/home');
-                    // TODO userId dans le localStorage
                 })
                 .catch((error) => {
                     console.log(error)

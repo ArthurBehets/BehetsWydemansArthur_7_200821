@@ -1,8 +1,9 @@
 <template>
     <nav class="navigationHome">
-        <router-link to="/home">Accueil</router-link>
-        <button v-on:click="deconnect()">Se déconnecter</button>
-        <router-link to="/createArticle">Ajouter une image</router-link>
+        <router-link to="/home" class="text-decoration-none color-black">Accueil</router-link>
+        <button v-on:click="deconnect()" class="btn-link border-0 bg-white text-decoration-none">Se déconnecter</button>
+        <router-link to="/createArticle" class="text-decoration-none">Ajouter une image</router-link>
+        <router-link to='/settings' class="text-decoration-none">Paramètres</router-link>
     </nav>
 </template>
 
@@ -18,3 +19,7 @@ export default({
     }
 })
 </script>
+
+<style lang="scss">
+
+</style>

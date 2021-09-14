@@ -3,6 +3,7 @@ import signup from '../views/signup.vue'
 import login from '../views/login.vue'
 import home from '../views/home.vue'
 import createArticle from '../views/createArticle.vue'
+import settings from '../views/settings'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/createArticle',
     name: 'createArticle',
     component : createArticle
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component : settings
   }
 ]
 

@@ -2,17 +2,27 @@ create database groupomania;
 
 use groupomania;
 
+create table grade (
+grade varchar(32) NOT NULL,
+rights char(3),
+primary key(grade)
+);
+
 create table user(
 userId smallInt unsigned auto_increment,
-email varchar(256),
+email varchar(256) UNIQUE,
 password varchar(32),
 firstname varchar(256),
 lastname varchar(256),
-primary key(userId)
+grade varchar(256) NOT NULL,
+primary key(userId),
+CONSTRAINT fk_user_grade
+foreign key (grade)
+references grade(grade)
 );
 
 create table category(
-categoryId smallint not null,
+categoryId smallint auto_increment not null,
 categoryName varchar(32) not null,
 primary key(categoryId)
 );
@@ -23,7 +33,9 @@ articleId smallint auto_increment NOT NULL,
 userId smallint unsigned NOT NULL,
 categoryId smallint NOT NULL,
 url  varchar(256),
-likes smallint NOT NULL default 1,
+legend varchar(256),
+likes smallint NOT NULL default 0,
+publicationDate datetime not null,
 primary key(articleId),
 CONSTRAINT fk_article_user 
 foreign key (userId)
