@@ -33,17 +33,19 @@ exports.login = (req, res, next) => {
     "SELECT password, userId, grade FROM user WHERE email = ?",
     [userData.email],
     function(err, results){
-      if(results[0].password == userData.password){
-        console.log(results);
-        return res.status(200).json({
-          console : "connected",
-          userId: results[0].userId,
-          grade: results[0].grade,
-            token: jwt.sign( 
-              { "userId": results[0].userId},
-              `${process.env.ACCESS_SECRET_TOKEN}`,
-              { expiresIn: '24h' })
-        })
+      if(results){
+        if(results[0].password == userData.password){
+          console.log(results);
+          return res.status(200).json({
+            console : "connected",
+            userId: results[0].userId,
+            grade: results[0].grade,
+              token: jwt.sign( 
+                { "userId": results[0].userId},
+                `${process.env.ACCESS_SECRET_TOKEN}`,
+                { expiresIn: '24h' })
+          })
+        }
       }
       if(err){
         return res.status(500).json({

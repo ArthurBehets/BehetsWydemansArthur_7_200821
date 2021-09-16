@@ -1,5 +1,6 @@
 var con = require('../connect');
 var moment = require('moment');
+var fs = require('fs');
 
 exports.getAllArticle = (req, res, next) => {
     con.query(
@@ -29,17 +30,30 @@ exports.getOneArticle = (req, res, next) => {
         }
     )
 }
-
-exports.getCategory = (req, res, next) => {
+exports.getAllCategories = (req, res, next) => {
     con.query(
-        "SELECT * FROM article WHERE articleCategory = ?",
-        [req.body.articleCategory],
-        function(err, result){
+        "SELECT * from category",
+        function(err, results){
+            if(err){
+                res.status(500).json({message : "Nothing found"})
+            }
+            if(results){
+                res.status(200).json({results})
+            }
+        }
+    )
+}
+
+exports.getOneCategory = (req, res, next) => {
+    con.query(
+        "SELECT * FROM article WHERE categoryId = ?",
+        [req.body.categoryId],
+        function(err, results){
             if (err){
                 return res.status(500).json({message : "Nothing found"})
             }
-            if (result){
-                return res.status(200).json({message : "You got all the category"})
+            if (results){
+                return res.status(200).json({results})
             }
         }
     )
@@ -47,12 +61,14 @@ exports.getCategory = (req, res, next) => {
 
 exports.createArticle = (req, res, next) => {
     var articleData = req.body;
-    let publicationDate = moment().format('YYYY-MM-DD HH:mm:ss');
     console.log(articleData);
-    // TODO vérifier les datas
+    let publicationDate = moment().format('YYYY-MM-DD HH:mm:ss');
+    // TODO vérifier les donnees
+    let url = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+    console.log(url);
     con.query(
         "INSERT INTO article (userId, categoryId, url, legend, publicationDate) VALUES (?,?,?,?,?)",
-        [articleData.userId, articleData.categoryId, articleData.url, articleData.legend, publicationDate],
+        [articleData.userId, articleData.categoryId, url, articleData.legend, publicationDate],
         function(err, result){
             if (err){
                 return res.status(500).json({message : "Nothing added"})

@@ -17,7 +17,7 @@ import router from '../../router/index'
        name : "loginForm",
        methods :{
            login : function(){
-               let user={
+               let user = {
                     email : document.getElementById('email').value,
                     password : document.getElementById('password').value
                 }

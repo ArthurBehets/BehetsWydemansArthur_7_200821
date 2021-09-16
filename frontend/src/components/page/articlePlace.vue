@@ -40,10 +40,10 @@ export default({
             console.log(modifyArticle);
             for(let i in allArticles.results){ //TODO image est un lien vers "getOne"
                 let article = allArticles.results[i];
-                console.log(article.articleId);
+                console.log(article.url);
                 document.getElementById('articlePlace').innerHTML += "<div class='articlePlace__post'>" + 
                 "<p>Votre ami "+ article.firstname + " " + article.lastname + " a publié une <a v-on:click='getOneArticle('1')'>image</a></p>" + // TODO click droit sur l'user
-                "<a v-on:click='getOneArticle('1')'><img href='" + article.url + "' alt='Image publiée'><a>" + 
+                "<a v-on:click='getOneArticle('1')'><img class='articlePlace__post-img' src='" + article.url + "' alt='Image publiée'><a>" + 
                 "</div>";
             }
         })
@@ -53,3 +53,13 @@ export default({
         )}      
 })
 </script>
+
+<style lang="scss">
+.articlePlace{
+    &__post{
+        &-img{
+            width : 400px;
+        }
+    }
+}
+</style>
