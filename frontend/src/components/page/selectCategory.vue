@@ -1,7 +1,7 @@
 <template>
    <div class="selectCategory">
-        <ul id="categoryChoices">
-            <li class="list__title">Categories</li>
+        <ul id="categoryChoices" class="categoryChoices">
+            <li class="categoryChoices-title">Categories</li>
             <li><a v-on:click="getAllArticle()">Tous</a></li>
             <li v-for="category in  $store.state.categories " :key="category"><a v-on:click='getOneCategory(category)'> {{ category }} </a></li>
         </ul>
@@ -86,10 +86,17 @@ export default ({
 </script>
 
 <style lang="scss">
-ul li{
-    list-style: none;
+.categoryChoices{
+    & li{
+        list-style: none;
+    }
+    &-title{
+        font-weight : bold;
+    }
 }
-.list__title{
-    font-weight: bold;
+@media (max-width : 576px){
+    ul li{
+        width : 25%;
+    }
 }
 </style>

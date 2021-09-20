@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <navigationHome />
+        <navigationHome class="fixed-top" />
         <div class="main">
             <selectCategory />
             <articlePlace />
@@ -26,16 +26,56 @@ export default({
     width: 100%;
 }
 .main{
+    margin-top : 120px;
     display: flex;
     flex-direction: row;
     margin-left : 10%;
     margin-right : 10%;
     & .selectCategory{
-        width : 20%;
+        width : 15%;
         text-align: left;
+        position: fixed;
     }
     & .articlePlace{
-        width : 80%;
+        width : 70%;
+        margin-left : 30%;
+    }
+}
+@media (max-width : 768px){
+    .main{
+        margin-left : 0;
+        & .articlePlace{
+            margin-left : 40%;
+            width : 60%;
+        } 
+    } 
+}
+@media (max-width : 576px){
+    .main{
+        flex-direction: column;
+        margin-top : 50px;
+        & .selectCategory{
+            position : fixed;
+            background-color: white;
+            padding-top : 20px;
+            width : 100%;
+            & .categoryChoices{
+                display: flex;
+                flex-direction: row;
+                width : 100%;
+                flex-wrap : wrap;
+                &-title{
+                    display : none;
+                }
+            }
+        }
+        & .articlePlace{
+            width : 100%;
+            margin : 0;
+            margin-top : 90px;
+            padding-left : 10%;
+            padding-right : 10%;
+        }
     }
 }
 </style>

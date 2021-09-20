@@ -40,9 +40,10 @@ export default({
             console.log(modifyArticle);
             for(let i in allArticles.results){ //TODO image est un lien vers "getOne"
                 let article = allArticles.results[i];
-                console.log(article.url);
+                console.log(article);
                 document.getElementById('articlePlace').innerHTML += "<div class='articlePlace__post'>" + 
-                "<p>Votre ami "+ article.firstname + " " + article.lastname + " a publié une <a v-on:click='getOneArticle('1')'>image</a></p>" + // TODO click droit sur l'user
+                "<p class='articlePlace__post-p'>Votre ami "+ article.firstname + " " + article.lastname + " a publié une image</p>" + // TODO click droit sur l'user
+                "<p class='articlePlace__post-date'>Publié le " + article.publicationDate + ".</p>" +
                 "<a v-on:click='getOneArticle('1')'><img class='articlePlace__post-img' src='" + article.url + "' alt='Image publiée'><a>" + 
                 "</div>";
             }
@@ -58,8 +59,23 @@ export default({
 .articlePlace{
     &__post{
         &-img{
-            width : 40%;
+            width : 60%;
+        }
+        &-p{
+            font-size : large;
         }
     }
+}
+@media (max-width : 992px){
+    
+}
+@media (max-width : 768px){
+    .articlePlace{
+        &__post{
+            &-img{
+                width : 80%;
+            }
+        }
+    }   
 }
 </style>
