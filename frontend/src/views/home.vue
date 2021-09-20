@@ -22,7 +22,9 @@ export default({
 </script>
 
 <style lang="scss">
-
+.home{
+    width: 100%;
+}
 .main{
     display: flex;
     flex-direction: row;

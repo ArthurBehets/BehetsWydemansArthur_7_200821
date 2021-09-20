@@ -58,7 +58,7 @@ export default({
 .articlePlace{
     &__post{
         &-img{
-            width : 400px;
+            width : 40%;
         }
     }
 }

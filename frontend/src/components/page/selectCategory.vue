@@ -1,7 +1,8 @@
 <template>
    <div class="selectCategory">
         <ul id="categoryChoices">
-            <li><a>Tous</a></li>
+            <li class="list__title">Categories</li>
+            <li><a v-on:click="getAllArticle()">Tous</a></li>
             <li v-for="category in  $store.state.categories " :key="category"><a v-on:click='getOneCategory(category)'> {{ category }} </a></li>
         </ul>
    </div>
@@ -48,13 +49,47 @@ export default ({
                document.getElementById('articlePlace').innerHTML = "";
                console.log(values);
            })
+       },
+       getAllArticle(){
+           fetch('http://localhost:3000/api/article/getAllArticle')
+        .then(function(res){
+            if(res.ok){
+                return res.json();
+            }
+        })
+        .then(function(allArticles){
+            let modifyArticle;
+            let grade = localStorage.getItem("grade");
+            if(grade=== "admin"){
+                modifyArticle = "<div>I'm an admin</div>";
+            }
+            if(grade=== "user"){
+                modifyArticle = "<div>I'm an user</div>";
+            }
+            console.log(modifyArticle);
+            for(let i in allArticles.results){ //TODO image est un lien vers "getOne"
+                let article = allArticles.results[i];
+                console.log(article.url);
+                document.getElementById('articlePlace').innerHTML += "<div class='articlePlace__post'>" + 
+                "<p>Votre ami "+ article.firstname + " " + article.lastname + " a publié une <a v-on:click='getOneArticle('1')'>image</a></p>" + // TODO click droit sur l'user
+                "<a v-on:click='getOneArticle('1')'><img class='articlePlace__post-img' src='" + article.url + "' alt='Image publiée'><a>" + 
+                "</div>";
+            }
+        })
+        .catch(function(err){
+            console.log(err);
+        }
+        )
        }
-   }
+   } 
 })
 </script>
 
 <style lang="scss">
 ul li{
     list-style: none;
+}
+.list__title{
+    font-weight: bold;
 }
 </style>
