@@ -4,7 +4,7 @@ var fs = require('fs');
 
 exports.getAllArticle = (req, res, next) => {
     con.query(
-        "SELECT * FROM article natural JOIN user  ORDER BY publicationDate DESC",
+        "SELECT * FROM article natural JOIN user ORDER BY publicationDate DESC",
         function(err, results){
             if (err){
                 return res.status(500).json({message : "Nothing found"})
@@ -45,9 +45,10 @@ exports.getAllCategories = (req, res, next) => {
 }
 
 exports.getOneCategory = (req, res, next) => {
+    console.log(req.params.categoryName);
     con.query(
-        "SELECT * FROM article WHERE categoryId = ?",
-        [req.body.categoryId],
+        "SELECT * FROM article natural JOIN user natural JOIN category WHERE categoryName = ? ORDER BY publicationDate DESC",
+        [req.params.categoryName],
         function(err, results){
             if (err){
                 return res.status(500).json({message : "Nothing found"})

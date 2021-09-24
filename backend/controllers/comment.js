@@ -1,30 +1,17 @@
 var con = require('../connect');
+var moment = require('moment');
 
-
-exports.getAllComment = (req, res, next) => {
+exports.getArticleComment = (req, res, next) => {
+    console.log(req.params.articleId);
     con.query(
-        "SELECT * FROM comment",
+        "SELECT * FROM comment natural JOIN user WHERE articleId= ?",
+        [req.params.articleId],
         function(err, result){
             if (err){
                 return res.status(500).json({message : "Nothing found"})
             }
             if (result){
-                return res.status(200).json({result, message : "You got them all"})
-            }
-        }
-    )
-}
-
-exports.getOneComment = (req, res, next) => {
-    con.query(
-        "SELECT * FROM commentary WHERE commentId= ?",
-        [req.body.articleId],
-        function(err, result){
-            if (err){
-                return res.status(500).json({message : "Nothing found"})
-            }
-            if (result){
-                return res.status(200).json({message : "You got this one"})
+                return res.status(200).json({result})
             }
         }
     )
@@ -32,11 +19,13 @@ exports.getOneComment = (req, res, next) => {
 
 
 exports.createComment = (req, res, next) => {
-    var commentData = req.body.comment;
+    var commentData = req.body;
+    console.log(commentData);
+    let publicationDate = moment().format('YYYY-MM-DD HH:mm:ss');
     // TODO vérifier les datas
     con.query(
-        "INSERT INTO comment (commentId, postId, userid, message, likes) VALUES (?,?,?,?,0)",
-        [commentData.commentId, commentData.postId, commentData.userId, commentData.message],
+        "INSERT INTO comment (articleId, userid, message, publicationDate) VALUES (?,?,?,?)",
+        [commentData.articleId, commentData.userId, commentData.message, publicationDate],
         function(err, result){
             if (err){
                 return res.status(500).json({message : "Error"})

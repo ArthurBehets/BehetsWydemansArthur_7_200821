@@ -51,6 +51,7 @@ userId smallint unsigned NOT NULL,
 articleId smallint NOT NULL,
 message varchar (8000) NOT NULL,
 likes smallint default 1, 
+publicationDate datetime not null,
 primary key (commentId),
 foreign key (userId)
 references user(userId),

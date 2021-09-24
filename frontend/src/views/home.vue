@@ -26,7 +26,7 @@ export default({
     width: 100%;
 }
 .main{
-    margin-top : 120px;
+    padding-top : 120px;
     display: flex;
     flex-direction: row;
     margin-left : 10%;

@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-md navbar-light bg-light mb-5">
+    <nav class="navbar navbar-expand-md mb-5">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -35,6 +35,7 @@ body{
 }
 .navbar{
     width : 100%;
+    background-color : #ffd7d7;
 }
 .homeNav{
     display : flex;
@@ -47,7 +48,7 @@ body{
         & a{
         color : black;
         &:hover{
-            color : gray;
+            color : rgba(#fd2d01, 0.8);
         }
     }
     }
@@ -56,6 +57,7 @@ body{
         width : 200%;
         height : 80px;
         object-fit: cover;
+        margin-left : 50%;
     }
     }
 }
