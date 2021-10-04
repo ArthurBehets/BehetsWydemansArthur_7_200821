@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import router from '../../router/index'
+//import router from '../../router/index'
 
    export default ({
        name : "loginForm",
@@ -23,7 +23,7 @@ import router from '../../router/index'
                     email : document.getElementById('email').value,
                     password : document.getElementById('password').value
                 }
-                let valide =false;
+                let valide = false;
                 await fetch("http://localhost:3000/api/auth/login", {
                     method: "POST",
                     headers: { 
@@ -57,7 +57,7 @@ import router from '../../router/index'
                 })
                 .then(() =>{
                     if(valide){
-                        router.push('/home');
+                        this.relocation('home');
                     }
                 })
                 .catch((error) => {
@@ -65,6 +65,9 @@ import router from '../../router/index'
                     console.log('error')
                 })
                 
+           },
+           relocation(route){
+               location = 'http://localhost:8080/#/' + route;
            }
        }
    })

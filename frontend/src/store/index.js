@@ -7,7 +7,8 @@ export default createStore({
     articles : [],
     comments : {},
     showComment : {},
-    articleToModify : ''
+    articleToModify : '',
+    liked : {}
   },
   mutations: {
   },

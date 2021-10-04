@@ -14,6 +14,8 @@ router.post('/deleteArticle', auth, multer, articleCtrl.deleteArticle);
 router.post('/addCategory/:categoryName', auth, articleCtrl.addCategory);
 router.post('/deleteCategory/:categoryId', auth, articleCtrl.deleteCategory);
 router.post('/likeArticle', auth, articleCtrl.likeArticle);
+router.get('/getLikedArticles', auth, articleCtrl.getLikedArticles);
+
 
 
 module.exports = router;

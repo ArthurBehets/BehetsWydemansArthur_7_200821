@@ -4,22 +4,22 @@
         <div class="settings">
             <a>Changer de nom</a><br>
             <a>Changer de mot de passe</a><br>
-            <a>Changer d'email</a>
+            <a>Changer d'email</a><br>
             <div v-if="$store.state.user.grade == 'admin'">
-                <input type="text" id="addingCategory" name="addingCategory">
                 <a  v-on:click='addCategory()'>
                     Ajouter une catégorie d'article.
                 </a>
-            </div>
-            <div>
+                <input type="text" id="addingCategory" name="addingCategory">
+            </div><br>
+            <div v-if="$store.state.user.grade == 'admin'">
+                <a  v-on:click='deleteCategory()'>
+                    Supprimer une catégorie d'article.
+                </a>
                 <select id="deleteCategory" name="deleteCategory">
                     <option v-for='category in $store.state.categories' :key="category" v-bind:value="category.categoryId">
                         {{ category.categoryName }} 
                     </option>
                 </select>
-                <a  v-on:click='deleteCategory()'>
-                    Supprimer une catégorie d'article.
-                </a>
             </div>
         </div>
     </div>
@@ -101,3 +101,14 @@ export default ({
     }
 })
 </script>
+
+<style lang="scss">
+.settings{
+    display : flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left : 40%;
+    font-size: larger;
+    font-weight : bold;
+}
+</style>

@@ -175,21 +175,54 @@ exports.deleteCategory = (req, res, next) => {
 }
 
 exports.likeArticle = (req, res, next) => {
-    console.log(req.params)
-    // let valeur = JSON.parse(req.query)
-    con.query(
-        "UPDATE article SET likes = likes +1 WHERE articleId = ?",
-        [req.query.articleId]
-    )
-    con.query(
-        "insert into articleUserLiked (articleId, userId) values (?,?)",
-        [req.query.articleId, req.query.userId],
-        function(err, result){
-            if (err){
-                return res.status(500).json({message : "Error"})
+    console.log(req.body.myBody)
+    if(req.body.myBody.liked === false){
+        con.query(
+            "UPDATE article SET likes = (likes +1) WHERE articleId = ?",
+            [req.body.myBody.articleId]
+        )
+        con.query(
+            "insert into articleUserLiked (articleId, userId) values (?,?)",
+            [req.body.myBody.articleId, req.body.myBody.userId],
+            function(err, result){
+                if (err){
+                    return res.status(500).json({message : "Article déjà liké"})
+                }
+                if (result){
+                    return res.status(200).json({message : "Liked"})
+                }
             }
-            if (result){
-                return res.status(200).json({message : "Added"})
+        )
+    }
+    else if(req.body.myBody.liked === true){
+        con.query(
+            "UPDATE article SET likes = (likes -1) WHERE articleId = ?",
+            [req.body.myBody.articleId]
+        )
+        con.query(
+            "delete from articleUserLiked where articleId = ? AND userId = ?",
+            [req.body.myBody.articleId, req.body.myBody.userId],
+            function(err, result){
+                if (err){
+                    return res.status(500).json({message : "Error"})
+                }
+                if (result){
+                    return res.status(200).json({message : "Disliked"})
+                }
+            }
+        )
+    }
+}
+
+exports.getLikedArticles = (req, res, next) => {
+    con.query(
+        "SELECT * FROM articleUserLiked",
+        function(err, results){
+            if (err){
+                return res.status(500).json({message : "Nothing found"})
+            }
+            if (results){
+                return res.status(200).json({results})
             }
         }
     )

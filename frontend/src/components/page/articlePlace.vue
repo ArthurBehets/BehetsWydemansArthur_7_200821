@@ -21,15 +21,18 @@
                     <img class='articlePlace__post-img' :src= 'article.url' alt='Image publiée'>
                 </div>
                 <div class='articlePlace__post-buttons' v-if="$store.state.showComment[article.articleId] === true">
-                    <button class='like button' v-on:click="like(article.articleId)"> {{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | Liker</button>
+                    <div v-if="$store.state.liked['A' + article.articleId + 'U' + $store.state.user.user] === true" class='articlePlace__post-buttons-like'><button class='like button liked' v-on:click="like(article.articleId)"> {{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | <img class="checkmark" src="../../assets/checkmark.png"></button></div>
+                    <div v-else-if="$store.state.liked['A' + article.articleId + 'U' + $store.state.user.user] === false || $store.state.liked['A' + article.articleId + 'U' + $store.state.user.user] === undefined" class='articlePlace__post-buttons-like'><button class='like button' v-on:click="like(article.articleId)"> {{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | Liker</button></div>
                     <button class='comment button' v-on:click="showComment(article.articleId)">Fermer les commentaires</button>
                 </div>
                 <div class='articlePlace__post-buttons' v-else-if="$store.state.showComment[article.articleId] === false">
-                    <button class='like button' v-on:click="like(article.articleId)">{{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | Liker</button>
+                    <div v-if="$store.state.liked['A' + article.articleId + 'U' + $store.state.user.user] === true" class='articlePlace__post-buttons-like'><button class='like button liked' v-on:click="like(article.articleId)"> {{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | <img class="checkmark" src="../../assets/checkmark.png"></button></div>
+                    <div v-else-if="$store.state.liked['A' + article.articleId + 'U' + $store.state.user.user] === false || $store.state.liked['A' + article.articleId + 'U' + $store.state.user.user] === undefined" class='articlePlace__post-buttons-like'><button class='like button' v-on:click="like(article.articleId)"> {{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | Liker</button></div>
                     <button class='comment button' v-on:click="showComment(article.articleId)">Afficher les commentaires</button>
                 </div>
                 <div class='articlePlace__post-buttons' v-else>
-                    <button class='like button' v-on:click="like(article.articleId)">{{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | Liker</button>
+                    <div v-if="$store.state.liked['A' + article.articleId + 'U' + $store.state.user.user] === true" class='articlePlace__post-buttons-like'><button class='like button liked' v-on:click="like(article.articleId)"> {{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | <img class="checkmark" src="../../assets/checkmark.png"></button></div>
+                    <div v-else-if="$store.state.liked['A' + article.articleId + 'U' + $store.state.user.user] === false || $store.state.liked['A' + article.articleId + 'U' + $store.state.user.user] === undefined" class='articlePlace__post-buttons-like'><button class='like button' v-on:click="like(article.articleId)"> {{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | Liker</button></div>
                     <button class='comment button' v-on:click="comment(article.articleId)">Afficher les commentaires</button>
                 </div>
                 <div v-if="$store.state.showComment[article.articleId] === true" class="articlePlace__post-comments">
@@ -53,39 +56,63 @@ import router from '../../router/index'
 export default({
     name: "articlePlace", 
     mounted : function(){
-        let articles = [];
-        fetch('http://localhost:3000/api/article/getAllArticle', {'headers' : {
-            'authorization':  localStorage.getItem('utoken')
-        }})
-        .then(function(res){
-            if(res.ok){
-                return res.json();
-            }
-        })
-        .then(function(allArticles){
-            let modifyArticle;
-            let grade = localStorage.getItem("grade");
-            if(grade=== "admin"){
-                modifyArticle = "<div>I'm an admin</div>";
-            }
-            if(grade=== "user"){
-                modifyArticle = "<div>I'm an user</div>";
-            }
-            console.log(modifyArticle);
-            for(let i in allArticles.results){ //TODO image est un lien vers "getOne"
-                let article = allArticles.results[i];
-                articles.push(article);
-            }
-        })
-        .catch(function(err){
-            console.log(err);
-        })
-        .then(() =>{
-                this.$store.state.articles = articles;
-       }
-       )
-    },
+        this.getLikedArticles();
+        this.getAllArticles();
+    } ,
     methods : {
+        getLikedArticles(){
+            let allLiked = [];
+            fetch('http://localhost:3000/api/article/getLikedArticles', {'headers' : {
+                'authorization':  localStorage.getItem('utoken')
+            }})
+            .then(function(res){
+                if(res.ok){
+                    return res.json();
+                }
+            })
+            .then(function(value){
+                for(let i in value.results){ 
+                    allLiked.push({'articleId' : value.results[i].articleId, 'userId' : value.results[i].userId});
+                }
+            })
+            .then(() =>{
+                let user;
+                let article;
+                for(let i in allLiked){
+                    user = (allLiked[i].userId).toString();
+                    article = (allLiked[i].articleId).toString();
+                    let userarticle = ('A' + article + 'U' + user);
+                    this.$store.state.liked[userarticle] = true;
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+        },
+        getAllArticles(){
+            let articles = [];
+            fetch('http://localhost:3000/api/article/getAllArticle', {'headers' : {
+                'authorization':  localStorage.getItem('utoken')
+            }})
+            .then(function(res){
+                if(res.ok){
+                    return res.json();
+                }
+            })
+            .then(function(allArticles){
+                for(let i in allArticles.results){ //TODO image est un lien vers "getOne"
+                    let article = allArticles.results[i];
+                    articles.push(article);
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+            .then(() =>{
+                    this.$store.state.articles = articles;
+        }
+        )
+        },
         comment(articleId){
             let storeComments = [];
             fetch('http://localhost:3000/api/comment/getArticleComment/' + articleId, {'headers' : {
@@ -126,9 +153,6 @@ export default({
                     if(res.ok){
                         return res.json();
                     }
-                })
-                .then(function(value){
-                    console.log(value);
                 })
                 .then(() =>{
                     let articles = [];
@@ -189,17 +213,49 @@ export default({
             })
         },
         like(articleId){
-            let myBody = new FormData();
-            myBody.append('userId', localStorage.getItem('user'));
-            myBody.append('articleId', articleId);
-            fetch('http://localhost:3000/api/article/likeArticle', {
+            let user = localStorage.getItem('user')
+            let myBody = {};
+            myBody.userId = user;
+            myBody.articleId = articleId;
+            if(this.$store.state.liked['A' + articleId + 'U' + user] == true){
+                myBody.liked = true;
+                fetch('http://localhost:3000/api/article/likeArticle', {
                     method: "POST",
-                    body : myBody,
-                    'headers' : {'authorization':  localStorage.getItem('utoken')}
-            })
-            .then(() =>{
-                console.log('ok');
-            })
+                    headers: { 
+                    'Accept': 'application/json', 
+                    'Content-Type': 'application/json',
+                    'authorization':  localStorage.getItem('utoken') 
+                    },
+                    body: JSON.stringify({myBody})
+                })
+                .then(() =>{
+                    this.$store.state.liked['A' + articleId + 'U' + user] = false;
+                    this.getLikedArticles();
+                    this.getAllArticles();
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
+            }
+            else if(this.$store.state.liked['A' + articleId + 'U' + user] == false || this.$store.state.liked['A' + articleId + 'U' + user] == undefined){
+                myBody.liked = false;
+                fetch('http://localhost:3000/api/article/likeArticle', {
+                    method: "POST",
+                    headers: { 
+                    'Accept': 'application/json', 
+                    'Content-Type': 'application/json',
+                    'authorization':  localStorage.getItem('utoken') 
+                    },
+                    body: JSON.stringify({myBody})
+                })
+                .then(() =>{
+                    this.$store.state.liked['A' + articleId + 'U' + user] = true;
+                    this.getAllArticles();
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
+            }
         }
     }      
 })
@@ -262,6 +318,12 @@ $fourth : #ffd7d7;
         }
         &-buttons{
             width : 100%;
+            display : flex;
+            flex-direction: row;
+            justify-content: center;
+            &-like{
+                background-color: red;
+            }
         }
         &-comments{
             margin-top : 30px;
@@ -307,6 +369,9 @@ $fourth : #ffd7d7;
 }
 .names{
     font-weight : bold;
+}
+.liked{
+    background-color : $fourth 
 }
 @media (max-width : 992px){
     
