@@ -2,9 +2,24 @@
     <div class="articlePlace" id="articlePlace">
         <div v-for="article in $store.state.articles" :key="article"> 
             <div class='articlePlace__post'>
-                <p class='articlePlace__post-p'>Votre ami {{ article.firstname }} {{ article.lastname }} a publié une image</p>
+                <div v-if="article.userId == $store.state.user.user || $store.state.user.grade == 'admin'">
+                    <a class="articlePlace__post-param">...</a>
+                    <div class="articlePlace__post-param-hidden">
+                        <ul>
+                            <li><a v-on:click="modify(article.articleId)">Modifier l'article</a></li>
+                            <li><a v-on:click="deleted(article.articleId)">Supprimer l'article</a></li>
+                        </ul>
+                    </div>
+                </div>
                 <p class='articlePlace__post-date'>Publié le {{ article.publicationDate }}.</p>
-                <img class='articlePlace__post-img' :src= 'article.url' alt='Image publiée'>
+                <div class="articlePlace__post-legend">
+                    <p class="articlePlace__post-legend-p">
+                        {{ article.legend }}
+                    </p>
+                </div>
+                <div v-if="article.url && article.url != 'null'">
+                    <img class='articlePlace__post-img' :src= 'article.url' alt='Image publiée'>
+                </div>
                 <div class='articlePlace__post-buttons' v-if="$store.state.showComment[article.articleId] === true">
                     <button class='like button' v-on:click="like(article.articleId)"> {{ article.likes }} <img src="../../assets/heart-solid.svg" class="heart"> | Liker</button>
                     <button class='comment button' v-on:click="showComment(article.articleId)">Fermer les commentaires</button>
@@ -34,7 +49,7 @@
 </template>
 
 <script>
-
+import router from '../../router/index'
 export default({
     name: "articlePlace", 
     mounted : function(){
@@ -75,7 +90,7 @@ export default({
             let storeComments = [];
             fetch('http://localhost:3000/api/comment/getArticleComment/' + articleId, {'headers' : {
             'authorization':  localStorage.getItem('utoken')
-        }}) 
+            }}) 
             .then(function(res){
                 if (res.ok){
                     return res.json();
@@ -91,6 +106,64 @@ export default({
                 this.$store.state.comments[articleId] = storeComments;
                 this.$store.state.showComment[articleId] = true;
             })
+        },
+        modify(articleId){
+            console.log(articleId);
+            this.$store.state.articleToModify = articleId;
+            router.push('/modifyArticle');
+        },
+        deleted(articleId){
+            if(confirm("Voulez vous vraiment supprimer ce poste?")){
+                console.log(articleId);
+                let deleteBody = new FormData();
+                deleteBody.append('articleId', articleId);
+                fetch('http://localhost:3000/api/article/deleteArticle', {
+                        method: "POST",
+                        body : deleteBody,
+                        'headers' : {'authorization':  localStorage.getItem('utoken')}
+                })
+                .then(function(res){
+                    if(res.ok){
+                        return res.json();
+                    }
+                })
+                .then(function(value){
+                    console.log(value);
+                })
+                .then(() =>{
+                    let articles = [];
+                fetch('http://localhost:3000/api/article/getAllArticle', {'headers' : {
+                    'authorization':  localStorage.getItem('utoken')
+                }})
+                .then(function(res){
+                    if(res.ok){
+                        return res.json();
+                    }
+                })
+                .then(function(allArticles){
+                    let modifyArticle;
+                    let grade = localStorage.getItem("grade");
+                    if(grade=== "admin"){
+                        modifyArticle = "<div>I'm an admin</div>";
+                    }
+                    if(grade=== "user"){
+                        modifyArticle = "<div>I'm an user</div>";
+                    }
+                    console.log(modifyArticle);
+                    for(let i in allArticles.results){ //TODO image est un lien vers "getOne"
+                        let article = allArticles.results[i];
+                        articles.push(article);
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
+                .then(() =>{
+                        this.$store.state.articles = articles;
+                }
+                )
+                })
+            }
         },
         showComment(articleId){
             if(this.$store.state.showComment[articleId] === false){
@@ -114,14 +187,29 @@ export default({
                 this.comment(articleId);
                 document.getElementById("newComment" + articleId).value = '';
             })
+        },
+        like(articleId){
+            let myBody = new FormData();
+            myBody.append('userId', localStorage.getItem('user'));
+            myBody.append('articleId', articleId);
+            fetch('http://localhost:3000/api/article/likeArticle', {
+                    method: "POST",
+                    body : myBody,
+                    'headers' : {'authorization':  localStorage.getItem('utoken')}
+            })
+            .then(() =>{
+                console.log('ok');
+            })
         }
     }      
 })
 </script>
 
 <style lang="scss">
-$primary : #ffd7d7;
-$secondary : rgba(#fd2d01, 0.3);
+$primary : #2c3e50;
+$secondary : #aeaeb2;
+$third : #fd2d01;
+$fourth : #ffd7d7;
 .articlePlace{
     &__post{
         background-color : $primary;
@@ -129,11 +217,48 @@ $secondary : rgba(#fd2d01, 0.3);
         border-radius : 40px;
         padding-top : 20px;
         padding-bottom: 20px;
+        &-param{
+            color : $third;
+            position :relative;
+            float : right;
+            padding-right : 20px;
+            text-decoration: none;
+            &:hover{
+                color : $primary;
+                &  + .articlePlace__post-param-hidden{
+                    display : block;
+                }
+            }
+            &-hidden{
+                color: $third ;
+                display : none;
+                position : absolute;
+                left : 80%;
+                float : right;
+                &:hover{
+                    display : block;
+                }
+                & ul{
+                    list-style: none;
+                }
+            }
+        }
+        &-name{
+            color : $third;
+        }
+        &-date{
+            color : $third;
+        }
+        &-legend{
+            padding-left: 40px;
+            padding-right: 40px;
+            &-p{
+                color : $fourth;
+                overflow: break-word;
+            }
+        }
         &-img{
             width : 60%;
-        }
-        &-p{
-            font-size : large;
         }
         &-buttons{
             width : 100%;
@@ -150,7 +275,7 @@ $secondary : rgba(#fd2d01, 0.3);
                 &-div{
                     display : inline-block;
                     flex-direction: column;
-                    background-color : #fff3f3;
+                    background-color : $secondary;
                     border-radius : 15px;
                     padding : 10px;
                     padding-right : 20px;
@@ -162,7 +287,7 @@ $secondary : rgba(#fd2d01, 0.3);
                         margin : 0;
                         text-align: left;
                         width : 100%;
-                        overflow-wrap : break-word;
+                        word-break : break-word;
                     }
                 }
             }

@@ -112,6 +112,11 @@ import router from '../../router/index'
 </script>
 
 <style lang="scss">
+$primary : #2c3e50;
+$secondary : #aeaeb2;
+$third : #fd2d01;
+$fourth : #ffd7d7;
+
    .signupForm{
        width : 100%;
        &__email{
@@ -163,7 +168,13 @@ import router from '../../router/index'
            }
        }
        &__button{
-           margin-left : 35%;
+            background-color: $secondary;
+            color : $primary;
+            border :1px solid $primary;
+            &:hover{
+                background-color : $fourth;
+                box-shadow : 1px 1px $primary;
+            }
        }
    }
 </style>

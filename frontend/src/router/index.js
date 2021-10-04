@@ -4,6 +4,7 @@ import login from '../views/login.vue'
 import home from '../views/home.vue'
 import createArticle from '../views/createArticle.vue'
 import settings from '../views/settings'
+import modifyArticle  from '../views/modifyArticle.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/settings',
     name: 'settings',
     component : settings
+  },
+  {
+    path : '/modifyArticle',
+    name : 'modifyArticle',
+    component : modifyArticle
   }
 ]
 

@@ -16,20 +16,6 @@ exports.getAllArticle = (req, res, next) => {
     )
 }
 
-exports.getOneArticle = (req, res, next) => {
-    con.query(
-        "SELECT * FROM article WHERE articleId = ?",
-        [req.params.id],
-        function(err, result){
-            if (err){
-                return res.status(500).json({message : "Nothing found"})
-            }
-            if (result){
-                return res.status(200).json({message : "You got this one"})
-            }
-        }
-    )
-}
 exports.getAllCategories = (req, res, next) => {
     con.query(
         "SELECT * from category",
@@ -45,7 +31,6 @@ exports.getAllCategories = (req, res, next) => {
 }
 
 exports.getOneCategory = (req, res, next) => {
-    console.log(req.params.categoryName);
     con.query(
         "SELECT * FROM article natural JOIN user natural JOIN category WHERE categoryName = ? ORDER BY publicationDate DESC",
         [req.params.categoryName],
@@ -62,45 +47,92 @@ exports.getOneCategory = (req, res, next) => {
 
 exports.createArticle = (req, res, next) => {
     var articleData = req.body;
-    console.log(articleData);
     let publicationDate = moment().format('YYYY-MM-DD HH:mm:ss');
     // TODO vérifier les donnees
-    let url = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+    let url = '';
+    let imgUrl = req.file? {
+        ... (`${req.protocol}://${req.get('host')}/images/${req.file.filename}`),
+    } : {
+        ...('null')
+    }
+    
+    for(i in imgUrl){
+        url += imgUrl[i];
+    }
+    
     console.log(url);
-    con.query(
-        "INSERT INTO article (userId, categoryId, url, legend, publicationDate) VALUES (?,?,?,?,?)",
-        [articleData.userId, articleData.categoryId, url, articleData.legend, publicationDate],
-        function(err, result){
-            if (err){
-                return res.status(500).json({message : "Nothing added"})
+    if(url == 'null'){
+        con.query(
+            "INSERT INTO article (userId, categoryId, legend, publicationDate) VALUES (?,?,?,?)",
+            [articleData.userId, articleData.categoryId, articleData.legend, publicationDate],
+            function(err, result){
+                if (err){
+                    return res.status(500).json({message : "Nothing added"})
+                }
+                if (result){
+                    return res.status(200).json({message : "Nicely added"})
+                }
             }
-            if (result){
-                return res.status(200).json({message : "Nicely added"})
+        )
+    }
+    else{
+        con.query(
+            "INSERT INTO article (userId, categoryId, url, legend, publicationDate) VALUES (?,?,?,?,?)",
+            [articleData.userId, articleData.categoryId, url, articleData.legend, publicationDate],
+            function(err, result){
+                if (err){
+                    return res.status(500).json({message : "Nothing added"})
+                }
+                if (result){
+                    return res.status(200).json({message : "Nicely added"})
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 exports.modifyArticle = (req, res, next) => {
-    var articleNewData = req.body.article;
-    con.query(
-        "UPDATE TABLE article SET url = ? legend = ?",
-        [`${req.protocol}://${req.get('host')}/images/${req.file.filename}`, articleNewData.legend],
-        function(err, result){
-            if (err){
-                return res.status(500).json({message : "Error"})
-            }
-            if (result){
-                return res.status(200).json({message : "Updated"})
-            }
-        }
-    )
+    let url = '';
+    let imgUrl = req.file? {
+        ... (`${req.protocol}://${req.get('host')}/images/${req.file.filename}`),
+    } : {
+        ...('null')
+    }
+    
+    for(i in imgUrl){
+        url += imgUrl[i];
+    }
+    if(url != 'null'){
+        con.query(
+            "UPDATE article SET url = ? WHERE articleId = ?",
+            [url, req.body.articleId],
+        )
+    }
+    if(req.body.legend != ''){
+        con.query(
+            "UPDATE article SET legend = ? WHERE articleId = ?",
+            [req.body.legend, req.body.articleId]
+        )
+    }
+    if(req.body.legend != ''){
+        con.query(
+            "UPDATE article SET legend = ? WHERE articleId = ?",
+            [req.body.legend, req.body.articleId]
+        )
+    }
+    if(req.body.categoryId != ''){
+        con.query(
+            "UPDATE article SET categoryId = ? WHERE articleId = ?",
+            [req.body.categoryId, req.body.articleId]
+        )
+    }
+    return res.status(200).json(message = 'ok');
 }
 
 exports.deleteArticle = (req, res, next) => {
     con.query(
-        "DELETE * FROM article WHERE articleId = ?",
-        [req.body],
+        "DELETE FROM article WHERE articleId = ?",
+        [req.body.articleId],
         function(err, result){
             if (err){
                 return res.status(500).json({message : "Error"})
@@ -112,6 +144,53 @@ exports.deleteArticle = (req, res, next) => {
     )
 }
 
+exports.addCategory = (req, res, next) => {
+    con.query(
+        "insert into category (categoryName) values (?)",
+        [req.params.categoryName],
+        function(err, result){
+            if (err){
+                return res.status(500).json({message : "Error"})
+            }
+            if (result){
+                return res.status(200).json({message : "Added"})
+            }
+        }
+    )
+}
+
+exports.deleteCategory = (req, res, next) => {
+    con.query(
+        "delete from category where categoryId = ?",
+        [req.params.categoryId],
+        function(err, result){
+            if (err){
+                return res.status(500).json({message : "Error"})
+            }
+            if (result){
+                return res.status(200).json({message : "Added"})
+            }
+        }
+    )
+}
+
 exports.likeArticle = (req, res, next) => {
-    //ok
+    console.log(req.params)
+    // let valeur = JSON.parse(req.query)
+    con.query(
+        "UPDATE article SET likes = likes +1 WHERE articleId = ?",
+        [req.query.articleId]
+    )
+    con.query(
+        "insert into articleUserLiked (articleId, userId) values (?,?)",
+        [req.query.articleId, req.query.userId],
+        function(err, result){
+            if (err){
+                return res.status(500).json({message : "Error"})
+            }
+            if (result){
+                return res.status(200).json({message : "Added"})
+            }
+        }
+    )
 }

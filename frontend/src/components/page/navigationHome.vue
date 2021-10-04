@@ -1,13 +1,13 @@
 <template>
-    <nav class="navbar navbar-expand-md mb-5">
+    <nav class="navbar-dark navbar navbar-expand-md mb-5">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse flex-column flex-md-row  homeNav" id="navbarSupportedContent">
-                <router-link to="/home" class="text-decoration-none color-black homeNav__logo"><img src="../../assets/icon-left-font-monochrome-black.png" class="homeNav__logo-img"></router-link>
+                <router-link to="/home" class="text-decoration-none color-black homeNav__logo"><img src="../../assets/icon-above-fontless.png" class="homeNav__logo-img"></router-link>
                 <div class="flex-column flex-md-row homeNav__menu">
-                    <router-link to="/createArticle" class="text-decoration-none">Ajouter une image</router-link>
+                    <router-link to="/createArticle" class="text-decoration-none">Créer un poste</router-link>
                     <a v-on:click="deconnect()" class="btn-link border-0 text-decoration-none">Se déconnecter</a>
                     <router-link to='/settings' class="text-decoration-none">Paramètres</router-link>
                 </div>
@@ -23,6 +23,7 @@ export default({
     name:"navigationHome",
     methods:{
         deconnect: function(){
+            localStorage.clear();
             router.push('/');
         }
     }
@@ -35,7 +36,7 @@ body{
 }
 .navbar{
     width : 100%;
-    background-color : #ffd7d7;
+    background-color : #2c3e50;
 }
 .homeNav{
     display : flex;
@@ -46,9 +47,10 @@ body{
         width : 37%;
         margin-right : 5%;
         & a{
-        color : black;
+            font-size: large;
+            color : #fd2d01;
         &:hover{
-            color : rgba(#fd2d01, 0.8);
+            color : #ffd7d7;
         }
     }
     }
@@ -72,19 +74,19 @@ body{
 @media (max-width : 768px){
     .homeNav{
         &__menu{
-            margin-left : 17%;
-            margin-top : -20px;
+            margin-left : 29%;
+            
         }
     }
 }
 @media (max-width : 576px){
     .homeNav{
         &__menu{
-            margin-left : 17%;
+            margin-left : 35%;
         }
         &__logo{
             &-img{
-                width : 170%;
+                width : 180%;
                 height : 80px;
             }
         }
@@ -93,11 +95,11 @@ body{
 @media (max-width : 350px){
     .homeNav{
         &__menu{
-            margin-left : 20%;
+            margin-left : 38%;
         }
         &__logo{
             &-img{
-                width : 140%;
+                width : 150%;
                 height : 80px;
             }
         }

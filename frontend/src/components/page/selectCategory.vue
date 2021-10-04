@@ -3,7 +3,11 @@
         <ul id="categoryChoices" class="categoryChoices">
             <li class="categoryChoices-title">Categories</li>
             <li><a class="categoryChoices-li-a" v-on:click="getAllArticle()">Tous</a></li>
-            <li v-for="category in  $store.state.categories " :key="category"><a v-on:click='getOneCategory(category)' class="categoryChoices-li-a"> {{ category }} </a></li>
+            <li v-for="category in  $store.state.categories " :key="category">
+                <a v-on:click='getOneCategory(category.categoryName)' class="categoryChoices-li-a">
+                    {{ category.categoryName }} 
+                </a>
+            </li>
         </ul>
    </div>
 </template>
@@ -11,28 +15,7 @@
 <script>
 export default ({
    name: "selectCategory",
-   mounted: function(){
-       let categories =[];
-       fetch('http://localhost:3000/api/article/getAllCategories', {'headers' : {
-            'authorization':  localStorage.getItem('utoken')
-        }})
-       .then(function(res){
-           if(res.ok){
-               return res.json();
-           }
-       })
-       .then(function(values){
-           let valuesBody = values.results;
-           console.log(valuesBody);
-           for (let i in valuesBody){
-                categories.push(valuesBody[i].categoryName);
-            }
-       })
-       .then(() =>{
-          this.$store.state.categories = categories; 
-       }
-       )
-   },
+   
    methods :{
        getOneCategory(categoryName){
            let articles = [];
@@ -105,11 +88,12 @@ export default ({
 .categoryChoices{
     & li{
         list-style: none;
+        margin-top : 10px;
         & a{
             color : black;
             text-decoration: none;
             &:hover{
-                color : rgba(#fd2d01, 0.8);
+                color : #fd2d01;
             }
         }
     }

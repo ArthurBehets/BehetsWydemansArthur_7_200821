@@ -8,9 +8,11 @@ const testMail = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
 
 exports.signup = (req, res, next) => {
   var userData = req.body.user;
+  console.log(userData);
   //TODO vérifier les données de userData
   if(testMail.test(userData.email)){
     if(8 < userData.password< 21){
+      console.log("ok");
       con.query(
         "INSERT INTO user (email, password, lastname, firstname, grade) VALUES (?,?,?,?,?)", 
         [userData.email, userData.password, userData.lastname, userData.firstname, userData.grade],
@@ -35,7 +37,6 @@ exports.login = (req, res, next) => {
     function(err, results){
       if(results){
         if(results[0].password == userData.password){
-          console.log(results);
           return res.status(200).json({
             console : "connected",
             userId: results[0].userId,
@@ -46,10 +47,15 @@ exports.login = (req, res, next) => {
                 { expiresIn: '24h' })
           })
         }
+        else{
+          return res.status(500).json({
+            console : "Le mot de passe ne correspond pas."
+          })
+        }
       }
       if(err){
         return res.status(500).json({
-          console : "Mot de passe incorrect"
+          console : "Cet email n'est pas enregistré."
         })
       }
     })

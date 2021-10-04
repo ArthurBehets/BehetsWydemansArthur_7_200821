@@ -24,6 +24,7 @@ export default({
 <style lang="scss">
 .home{
     width: 100%;
+    position: relative;
 }
 .main{
     padding-top : 120px;
@@ -31,10 +32,13 @@ export default({
     flex-direction: row;
     margin-left : 10%;
     margin-right : 10%;
+    padding-bottom : 40px;
     & .selectCategory{
         width : 15%;
         text-align: left;
         position: fixed;
+        margin-top : 40px;
+        font-size : larger;
     }
     & .articlePlace{
         width : 70%;

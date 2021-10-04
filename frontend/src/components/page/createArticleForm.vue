@@ -1,60 +1,81 @@
 <template>
     <div class="createArticle__form">
-        <form class="form">
-            <div class="form__legend">
-                <label for='legend'>Légende : </label>
-                <input type="text" id="legend" name="legend" required>
-            </div>
-            <div class="form__file">
-                <label for="file">Fichier : </label>
-                <input type="file" id="file" name="file">
-            </div>
-            <div class="form__categoryList">
-                <label for="categoryList">Catégorie : </label>
-                <select id="categoryList" name="categoryList">
-                    <option value="other">Autre</option>
-                </select>
-            </div>
-            <div class="form__button">
-                <a v-on:click="createArticle()">Publier</a>
-            </div>
-        </form>
+        <div class="articleWithFile">
+            <h2>
+                <p>Ajouter une image</p>
+            </h2>
+            <form class="form">
+                <div class="form__legend">
+                    <label for='legend'>Légende : </label>
+                    <input type="text" id="legendFile" name="legend" required>
+                </div>
+                <div class="form__file">
+                    <label for="file">Fichier : </label>
+                    <input type="file" id="file" name="file">
+                </div>
+                <div class="form__categoryList">
+                    <label for="categoryList">Catégorie : </label>
+                    <select id="categoryListFile" name="categoryList">
+                        <option v-for='category in $store.state.categories' :key="category" v-bind:value="category.categoryId">
+                            {{ category.categoryName }} 
+                        </option>
+                    </select>
+                </div>
+                <div class="form__button">
+                    <a v-on:click="createArticle('file')">Publier</a>
+                </div>
+            </form>
+        </div>
+        <div class="articleWithoutFile">
+            <h2>
+                <p>Ajouter du texte</p>
+            </h2>
+            <form class="form">
+                <div class="form__legend">
+                    <label for='legend'>Légende : </label>
+                    <input type="text" id="legendText" name="legend" required>
+                </div>
+                <div class="form__categoryList">
+                    <label for="categoryList">Catégorie : </label>
+                    <select id="categoryListText" name="categoryList">
+                        <option v-for='category in $store.state.categories' :key="category" v-bind:value="category.categoryId">
+                            {{ category.categoryName }} 
+                        </option>
+                    </select>
+                </div>
+                <div class="form__button">
+                    <a v-on:click="createArticle('text')">Publier</a>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 
 <script>
-
+import router from '../../router/index'
 export default({
     name :"createArticleForm",
-    mounted: function(){
-       fetch('http://localhost:3000/api/article/getAllCategories', {'headers' : {
-            'authorization':  localStorage.getItem('utoken')
-        }})
-       .then(function(res){
-           if(res.ok){
-               return res.json();
-           }
-       })
-       .then(function(values){
-           let valuesBody = values.results;
-           console.log(values.results);
-           for (let i in valuesBody){
-               document.getElementById("categoryList").innerHTML += "<option value='" + valuesBody[i].categoryId + "'>" + valuesBody[i].categoryName + "</option>"
-           }
-       })
-   },
     methods :{
-        createArticle : function(){
+        createArticle(type){
             let newArticle = new FormData();
-            newArticle.append("file", document.getElementById("file").files[0]);
-            newArticle.append("userId", localStorage.getItem("user"));
-            newArticle.append("categoryId", document.getElementById("categoryList").value);
-            newArticle.append("legend", document.getElementById("legend").value);
-            console.log(newArticle.file);
+            if(type == 'file'){
+                newArticle.append("file", document.getElementById("file").files[0]);
+                newArticle.append("userId", localStorage.getItem("user"));
+                newArticle.append("categoryId", document.getElementById("categoryListFile").value);
+                newArticle.append("legend", document.getElementById("legendFile").value);
+            }
+            if(type =='text'){
+                newArticle.append("userId", localStorage.getItem("user"));
+                newArticle.append("categoryId", document.getElementById("categoryListText").value);
+                newArticle.append("legend", document.getElementById("legendText").value);
+            }
             fetch("http://localhost:3000/api/article/createArticle", {
                     method: "POST",
                     body : newArticle,
                     'headers' : {'authorization':  localStorage.getItem('utoken')}
+            })
+            .then(() =>{
+                router.push('/home');
             })
         }
     }
@@ -87,5 +108,12 @@ export default({
             box-shadow: 0.5px 0.5px gray;
         }
     }
+}
+
+.articleWithFile{
+    margin-top : 100px;
+    padding-bottom : 50px;
+    margin-bottom: 50px;
+    border-bottom : 1px solid black;
 }
 </style>
