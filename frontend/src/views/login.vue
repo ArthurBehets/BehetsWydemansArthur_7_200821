@@ -5,7 +5,7 @@
             <loginForm class="login__content-form"/>
         </div>
         <logo />
-        <div id="login__alert" class="alert"></div>
+        <div id="login__alert" class="login__alert"></div>
     </div>
 </template>
 
@@ -41,7 +41,21 @@ $fourth : #ffd7d7;
         &__form{
             color : $primary;
         }
-    } 
+    }
+    &__alert{
+            position: absolute;
+            bottom : 50px;
+            left : 100px;
+            z-index: 1;
+            border-radius: 20px;
+            &-bad{
+                background-color: $fourth;
+                border-radius: 20px;
+                padding : 10px;
+                padding-top : 2px;
+                padding-bottom : 0;
+            }
+        } 
 }
 
 @media (max-width : 992px){

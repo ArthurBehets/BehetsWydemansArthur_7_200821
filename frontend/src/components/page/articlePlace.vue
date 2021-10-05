@@ -58,6 +58,8 @@ export default({
     mounted : function(){
         this.getLikedArticles();
         this.getAllArticles();
+        this.$store.state.user.user = localStorage.getItem("user");
+        this.$store.state.user.grade = localStorage.getItem("grade");
     } ,
     methods : {
         getLikedArticles(){

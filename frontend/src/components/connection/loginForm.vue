@@ -37,14 +37,6 @@
                         valide = true;
                         return res.json();
                     }
-                    else{
-                        console.log('error');
-                        let timeout = [];
-                        document.getElementById("alert").innerHTML = "<div class ='alert-bad'><p>Les identifiants ne sont pas corrects.</p></div>";
-                        timeout.push(setTimeout(function(){
-                            document.getElementById("alert").innerHTML = "";
-                        }, 5000));
-                    }
                 })
                 .then((value)=>{
                     localStorage.setItem("user", value.userId);
@@ -52,22 +44,27 @@
                     localStorage.setItem("utoken", value.token);
                 })
                 .then(() =>{
-                    this.$store.state.user.user = localStorage.getItem("user");
-                    this.$store.state.user.grade = localStorage.getItem("grade");
-                })
-                .then(() =>{
                     if(valide){
                         this.relocation('home');
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log(error);
+                        let timeout = [];
+                        document.getElementById("login__alert").innerHTML = "<div class ='login__alert-bad'><p>Les identifiants ne sont pas corrects.</p></div>";
+                        timeout.push(setTimeout(function(){
+                            document.getElementById("login__alert").innerHTML = "";
+                        }, 5000));
+                        document.getElementById('email').value = '';
+                        document.getElementById('password').value = '';
                 })
                 
            },
            relocation(route){
-               location = 'http://localhost:8080/#/' + route;
-           }
+               if(localStorage.getItem('user') && localStorage.getItem('utoken') && localStorage.getItem('grade')){
+                   location = 'http://localhost:8080/#/' + route;
+               }
+            }
        }
    })
 </script>
