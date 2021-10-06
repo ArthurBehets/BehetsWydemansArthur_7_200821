@@ -8,4 +8,4 @@
                                   - password (Le password de la database)
                                   - database (Le nom de la database)
                                   
-4) Lancer "nodemon server" en backend et npm run serve en frontend.
+4) Lancer "nodemon server" en backend et "npm run serve" en frontend.
