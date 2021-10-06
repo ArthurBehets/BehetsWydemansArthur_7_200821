@@ -1,7 +1,7 @@
 # BehetsWydemansArthur_7_200821
 
 1) Cloner le repository.
-2) Créer une database sur mySQL et et ajouter les lignes de code du dossier 'main.sql'.
+2) Créer une database sur mySQL et ajouter les lignes de code du dossier 'main.sql'.
 3) Remplir un dossier .env avec : - ACCESS_TOKEN_SECRET (Peut être généré via le code suivant : require('crypto').randomBytes(64).toString('hex')).
                                   - host (Le host de la databse)
                                   - user (Le user de la database)
