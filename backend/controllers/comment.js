@@ -22,7 +22,6 @@ exports.createComment = (req, res, next) => {
     var commentData = req.body;
     console.log(commentData);
     let publicationDate = moment().format('YYYY-MM-DD HH:mm:ss');
-    // TODO vérifier les datas
     con.query(
         "INSERT INTO comment (articleId, userid, message, publicationDate) VALUES (?,?,?,?)",
         [commentData.articleId, commentData.userId, commentData.message, publicationDate],
@@ -66,8 +65,4 @@ exports.deleteComment = (req, res, next) => {
             }
         }
     )
-}
-
-exports.likeComment = (req, res, next) => {
-    //ok
 }

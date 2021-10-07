@@ -8,12 +8,14 @@ const testMail = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
 
 exports.signup = (req, res, next) => {
   var userData = req.body.user;
-  bcrypt.hash(req.body.user.password, 10)
+  console.log(userData);
+  bcrypt.hash(userData.password, 10)
   .then(hash =>{
     console.log(hash);
-    //TODO vérifier les données de userData
     if(testMail.test(userData.email)){
+      console.log('ok');
       if(8 < userData.password < 21){
+        console.log('ok');
         con.query(
           "INSERT INTO user (email, password, lastname, firstname, grade) VALUES (?,?,?,?,?)", 
           [userData.email, hash, userData.lastname, userData.firstname, userData.grade],
@@ -47,7 +49,6 @@ exports.login = (req, res, next) => {
         bcrypt.compare(userData.password, results[0].password)
         .then(valid =>{
           if(!valid){
-            console.log('nop')
             return res.status(500).json({
               console : "Mot de passe incorrect"
             })

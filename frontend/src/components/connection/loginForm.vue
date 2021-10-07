@@ -1,5 +1,5 @@
 <template>
-    <form class="loginForm">
+    <div class="loginForm">
         <div class="loginForm__email">
             <input type="email" id="email" placeholder="Email" required>
         </div>
@@ -9,12 +9,10 @@
         <div>
             <button v-on:click="login()">Se connecter</button>
         </div>
-    </form>
+    </div>
 </template>
 
 <script>
-//import router from '../../router/index'
-
    export default ({
        name : "loginForm",
        methods :{
@@ -50,13 +48,13 @@
                 })
                 .catch((error) => {
                     console.log(error);
-                        let timeout = [];
-                        document.getElementById("login__alert").innerHTML = "<div class ='login__alert-bad'><p>Les identifiants ne sont pas corrects.</p></div>";
-                        timeout.push(setTimeout(function(){
-                            document.getElementById("login__alert").innerHTML = "";
-                        }, 5000));
-                        document.getElementById('email').value = '';
-                        document.getElementById('password').value = '';
+                    let timeout = [];
+                    document.getElementById("login__alert").innerHTML = "<div class ='login__alert-bad'><p>Les identifiants ne sont pas corrects.</p></div>";
+                    timeout.push(setTimeout(function(){
+                        document.getElementById("login__alert").innerHTML = "";
+                    }, 5000));
+                    document.getElementById('email').value = '';
+                    document.getElementById('password').value = '';
                 })
                 
            },

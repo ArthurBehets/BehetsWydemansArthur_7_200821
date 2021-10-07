@@ -11,7 +11,7 @@
                         </ul>
                     </div>
                 </div>
-                <p class='articlePlace__post-date'>Publié le {{ article.publicationDate }}.</p>
+                <p class='articlePlace__post-date'>Publié le {{ article.publicationDate }} par {{article.firstname}} {{article.lastname}}.</p>
                 <div class="articlePlace__post-legend">
                     <p class="articlePlace__post-legend-p">
                         {{ article.legend }}
@@ -102,8 +102,15 @@ export default({
                 }
             })
             .then(function(allArticles){
-                for(let i in allArticles.results){ //TODO image est un lien vers "getOne"
+                for(let i in allArticles.results){
                     let article = allArticles.results[i];
+                    let dateSplited = (allArticles.results[i].publicationDate).split("-");
+                    let year = dateSplited[0];
+                    var month = (Number(dateSplited[1])).toString();
+                    var dateSplited2 = dateSplited[2].split(" ");
+                    var day = dateSplited2[0].substr(0, 2);
+                    let date = (day + "/" + month + "/" + year);
+                    article.publicationDate = date;
                     articles.push(article);
                 }
             })
@@ -137,7 +144,6 @@ export default({
             })
         },
         modify(articleId){
-            console.log(articleId);
             this.$store.state.articleToModify = articleId;
             router.push('/modifyArticle');
         },
@@ -167,16 +173,7 @@ export default({
                     }
                 })
                 .then(function(allArticles){
-                    let modifyArticle;
-                    let grade = localStorage.getItem("grade");
-                    if(grade=== "admin"){
-                        modifyArticle = "<div>I'm an admin</div>";
-                    }
-                    if(grade=== "user"){
-                        modifyArticle = "<div>I'm an user</div>";
-                    }
-                    console.log(modifyArticle);
-                    for(let i in allArticles.results){ //TODO image est un lien vers "getOne"
+                    for(let i in allArticles.results){
                         let article = allArticles.results[i];
                         articles.push(article);
                     }
@@ -281,6 +278,7 @@ $fourth : #ffd7d7;
             float : right;
             padding-right : 20px;
             text-decoration: none;
+            width : 100px;
             &:hover{
                 color : $primary;
                 &  + .articlePlace__post-param-hidden{

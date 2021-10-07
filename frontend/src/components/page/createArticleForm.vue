@@ -84,8 +84,8 @@ export default({
 
 <style lang="scss">
 .form{
-    width : 40%;
-    margin-left : 40%;
+    width :50%;
+    margin-left : 30%;
     &__legend{
         text-align: left;
         margin-bottom: 15px;
@@ -109,11 +109,24 @@ export default({
         }
     }
 }
-
+h2{
+    text-align: left;
+    margin-left : 30%;
+}
 .articleWithFile{
     margin-top : 100px;
     padding-bottom : 50px;
     margin-bottom: 50px;
     border-bottom : 1px solid black;
+}
+@media (max-width : 992px){
+    .form{
+        margin-left : 5%;
+        width : 95%;
+    }
+    h2{
+        text-align: left;
+        margin-left : 30px;
+    }
 }
 </style>

@@ -48,7 +48,6 @@ exports.getOneCategory = (req, res, next) => {
 exports.createArticle = (req, res, next) => {
     var articleData = req.body;
     let publicationDate = moment().format('YYYY-MM-DD HH:mm:ss');
-    // TODO vérifier les donnees
     let url = '';
     let imgUrl = req.file? {
         ... (`${req.protocol}://${req.get('host')}/images/${req.file.filename}`),
@@ -59,8 +58,6 @@ exports.createArticle = (req, res, next) => {
     for(i in imgUrl){
         url += imgUrl[i];
     }
-    
-    console.log(url);
     if(url == 'null'){
         con.query(
             "INSERT INTO article (userId, categoryId, legend, publicationDate) VALUES (?,?,?,?)",

@@ -7,11 +7,11 @@
             <form class="form">
                 <div class="form__legend">
                     <label for='legend'>Légende : </label>
-                    <input type="text" id="legend" name="legend" required>
+                    <textarea id="legend" name="legend" required></textarea>
                 </div>
                 <div class="form__file">
-                    <label for="file">Fichier : </label>
-                    <input type="file" id="file" name="file">
+                    <label for="file">Modifier le fichier : </label>
+                    <input type="file" id="file" name="file">   
                 </div>
                 <div class="form__categoryList">
                     <label for="categoryList">Catégorie : </label>
@@ -59,3 +59,20 @@ export default({
 })
 
 </script>
+
+<style lang="scss">
+body{
+    width : 100%;
+}
+.modifyArticle__form{
+    padding-top : 50px;
+    width : 100%;
+}
+.form__legend{
+    & textarea{
+        height : 30px;
+        width : 40%;
+        word-wrap : break-word;
+    }
+}
+</style>

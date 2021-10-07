@@ -6,13 +6,13 @@
             <a>Changer de mot de passe</a><br>
             <a>Changer d'email</a><br>
             <div v-if="$store.state.user.grade == 'admin'">
-                <a  v-on:click='addCategory()'>
+                <a  class="settings__link" v-on:click='addCategory()'>
                     Ajouter une catégorie d'article.
                 </a>
                 <input type="text" id="addingCategory" name="addingCategory">
             </div><br>
             <div v-if="$store.state.user.grade == 'admin'">
-                <a  v-on:click='deleteCategory()'>
+                <a  class="settings__link" v-on:click='deleteCategory()'>
                     Supprimer une catégorie d'article.
                 </a>
                 <select id="deleteCategory" name="deleteCategory">
@@ -110,5 +110,17 @@ export default ({
     margin-left : 40%;
     font-size: larger;
     font-weight : bold;
+    &__link{
+        color : black;
+        text-decoration: none;
+        &:hover{
+            color : #ffd7d7;
+        }
+    }
+}
+@media (max-width : 576px){
+    .settings{
+        margin-left : 5%;
+    }
 }
 </style>

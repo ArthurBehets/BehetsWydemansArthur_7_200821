@@ -11,7 +11,7 @@ primary key(grade)
 create table user(
 userId smallInt unsigned auto_increment,
 email varchar(256) UNIQUE,
-password varchar(32),
+password varchar(256),
 firstname varchar(256),
 lastname varchar(256),
 grade varchar(256) NOT NULL,
@@ -75,5 +75,6 @@ foreign key(commentId) references comment(commentId),
 foreign key(userId) references user(userId)
 );
 
+Insert into grade (grade, rights) values ('user', 'rwx'), ('admin', 'rwd');
 
 

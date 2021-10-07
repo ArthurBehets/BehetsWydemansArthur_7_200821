@@ -9,7 +9,6 @@ router.get('/getArticleComment/:articleId', auth, commentCtrl.getArticleComment)
 router.post('/createComment', auth, multer, commentCtrl.createComment);
 router.post('/modifyComment', auth, multer, commentCtrl.modifyComment);
 router.post('/deleteComment', auth, multer, commentCtrl.deleteComment);
-router.post('/likeComment', auth, commentCtrl.likeComment);
 
 
 module.exports = router;

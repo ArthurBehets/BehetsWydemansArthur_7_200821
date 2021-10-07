@@ -37,7 +37,7 @@ export default ({
                     modifyArticle = "<div>I'm an user</div>";
                 }
                 console.log(modifyArticle);
-                for(let i in values.results){ //TODO image est un lien vers "getOne"
+                for(let i in values.results){
                     let article = values.results[i];
                     articles.push(article);
                 }
@@ -67,7 +67,7 @@ export default ({
                 modifyArticle = "<div>I'm an user</div>";
             }
             console.log(modifyArticle);
-            for(let i in allArticles.results){ //TODO image est un lien vers "getOne"
+            for(let i in allArticles.results){
                 let article = allArticles.results[i];
                 articles.push(article);
             }

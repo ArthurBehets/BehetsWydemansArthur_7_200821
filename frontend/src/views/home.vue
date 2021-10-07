@@ -22,6 +22,11 @@ export default({
 </script>
 
 <style lang="scss">
+$primary : #2c3e50;
+$secondary : #aeaeb2;
+$third : #fd2d01;
+$fourth : #ffd7d7;
+
 .home{
     width: 100%;
     position: relative;
@@ -58,11 +63,14 @@ export default({
     .main{
         flex-direction: column;
         margin-top : 50px;
+        padding-top : 80px;
         & .selectCategory{
             position : fixed;
-            background-color: white;
-            padding-top : 20px;
+            background-color: $secondary ;
+            padding-top : 0px;
+            margin : 0;
             width : 100%;
+            top : 55px;
             & .categoryChoices{
                 display: flex;
                 flex-direction: row;
@@ -78,7 +86,7 @@ export default({
             margin : 0;
             margin-top : 90px;
             padding-left : 10%;
-            padding-right : 10%;
+            padding-right : 0;
         }
     }
 }
