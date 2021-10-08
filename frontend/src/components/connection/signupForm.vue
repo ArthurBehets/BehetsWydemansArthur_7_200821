@@ -35,7 +35,7 @@ import router from '../../router/index'
                     lastname : document.getElementById("lastname").value,
                     firstname : document.getElementById("firstname").value,
                     password : document.getElementById("password").value,
-                    grade : "admin"
+                    grade : "user"
                 }
                 if(user.email && user.lastname && user.firstname && user.password){
                     if(this.validateEmail() && this.validateLastname() && this.validateFirstname() && this.validatePassword() && this.validateConfirmation()){

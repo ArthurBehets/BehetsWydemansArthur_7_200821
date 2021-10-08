@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import router from '../../router/index'
    export default ({
        name : "loginForm",
        methods :{
@@ -43,7 +44,7 @@
                 })
                 .then(() =>{
                     if(valide){
-                        this.relocation('home');
+                        this.relocation();
                     }
                 })
                 .catch((error) => {
@@ -58,9 +59,9 @@
                 })
                 
            },
-           relocation(route){
+           relocation(){
                if(localStorage.getItem('user') && localStorage.getItem('utoken') && localStorage.getItem('grade')){
-                   location = 'http://localhost:8080/#/' + route;
+                   router.push('/home');
                }
             }
        }
